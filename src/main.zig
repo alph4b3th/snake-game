@@ -12,7 +12,21 @@ pub fn main() anyerror!void {
     defer rl.closeWindow();
 
     rl.setTargetFPS(fps);
-    try snake.create();
+
+    var gpa = std.heap.SafeAllocator.init(
+        std.heap.page_allocator,
+        .{},
+    );
+    defer _ = gpa.deinit();
+
+    const allocator = gpa.allocator();
+
+    try snake.create(allocator);
+    for (0..3) |_| {
+        try snake.addSegment(allocator);
+    }
+
+    
     while (!rl.windowShouldClose()) {
         snake.move(snake.down);
 

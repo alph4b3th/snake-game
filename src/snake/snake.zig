@@ -7,21 +7,16 @@ pub const delay_vel = 500;
 
 var body: std.ArrayList(cell) = .empty;
 
-pub fn create() !void {
-    var gpa = std.heap.SafeAllocator.init(
-        std.heap.page_allocator,
-        .{},
-    );
-    // defer _ = gpa.deinit();
+pub fn create(allocator: std.mem.Allocator) !void {
+    try addSegment(allocator);
+    //    defer body.deinit(allocator);
+}
 
-    const allocator = gpa.allocator();
-
-    // defer body.deinit(allocator);
-
+pub fn addSegment(allocator: std.mem.Allocator) !void {
     try body.append(allocator, cell{ .posX = 190, .posY = 250 });
 }
 
-var last: f64 = undefined;
+var lastMoveTime: f64 = undefined;
 
 pub const right = 1;
 pub const left = 2;
@@ -32,29 +27,46 @@ pub fn move(direction: u8) void {
     const velocity = 0.3;
     const now = rl.getTime();
 
-    if (now - last > velocity) {
-        last = now;
+    if (now - lastMoveTime > velocity) {
+        lastMoveTime = now;
+        calculatePosBody();
         calculatePosHead(direction);
     }
 }
 
 fn calculatePosHead(direction: u8) void {
+    const margin = 1;
     switch (direction) {
         right => {
-            body.items[0].posX += render.size;
+            body.items[0].posX += render.size + margin;
         },
 
         left => {
-            body.items[0].posX -= render.size;
+            body.items[0].posX -= render.size + margin;
         },
         up => {
-            body.items[0].posY -= render.size;
+            body.items[0].posY -= render.size + margin;
         },
         down => {
-            body.items[0].posY += render.size;
+            body.items[0].posY += render.size + margin;
         },
 
         else => {},
+    }
+}
+
+fn calculatePosBody() void {
+    const len = body.items.len;
+    var i: usize = 2;
+
+    body.items[1] = body.items[0];
+
+    while (i < len) : (i += 1) {
+        std.debug.print("{d}\n", .{i});
+
+        body.items[i] = body.items[i - 1];
+        //0 => head
+        //1 => pescoço
     }
 }
 
