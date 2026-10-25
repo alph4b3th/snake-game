@@ -41,6 +41,6 @@ pub fn main() anyerror!void {
         rl.clearBackground(.white);
 
         snake.show();
-        rl.drawText("@alph4b3h", 190, 200, 20, .light_gray);
+        rl.drawText("@alph4b3th", 190, 200, 20, .light_gray);
     }
 }
