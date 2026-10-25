@@ -57,17 +57,33 @@ fn calculatePosHead(direction: u8) void {
 
 fn calculatePosBody() void {
     const len = body.items.len;
-    var i: usize = 2;
+    var i = len - 1;
 
-    body.items[1] = body.items[0];
-
-    while (i < len) : (i += 1) {
+    while (i >= 2) : (i -= 1) {
         std.debug.print("{d}\n", .{i});
 
+        if (i == 2) {
+            
+            body.items[2]= body.items[1];
+            body.items[1] = body.items[0];
+            break;
+        }
+
         body.items[i] = body.items[i - 1];
-        //0 => head
-        //1 => pescoço
     }
+
+    // var i: usize = 2;
+
+    // body.items[1] = body.items[0];
+
+    // while (i < len) : (i += 1) {
+    //     std.debug.print("{d}\n", .{i});
+
+    //     body.items[i] = body.items[i - 1];
+
+    //     //0 => head
+    //     //1 => pescoço
+    // }
 }
 
 pub fn show() void {

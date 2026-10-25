@@ -22,13 +22,13 @@ pub fn main() anyerror!void {
     const allocator = gpa.allocator();
 
     try snake.create(allocator);
-    for (0..3) |_| {
+    for (1..10) |_| {
         try snake.addSegment(allocator);
     }
 
     
     while (!rl.windowShouldClose()) {
-        snake.move(snake.down);
+        snake.move(snake.right);
 
         rl.beginDrawing();
         defer rl.endDrawing();
