@@ -26,10 +26,15 @@ pub fn main() anyerror!void {
         try snake.addSegment(allocator);
     }
 
-    
     while (!rl.windowShouldClose()) {
-        snake.move(snake.right);
+        if (rl.isKeyDown(.right)) snake.changeDirection(snake.right);
+        if (rl.isKeyDown(.left)) snake.changeDirection(snake.left);
 
+        if (rl.isKeyDown(.up)) snake.changeDirection(snake.up);
+
+        if (rl.isKeyDown(.down)) snake.changeDirection(snake.down);
+
+        snake.move();
         rl.beginDrawing();
         defer rl.endDrawing();
 

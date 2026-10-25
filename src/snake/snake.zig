@@ -23,18 +23,24 @@ pub const left = 2;
 pub const up = 3;
 pub const down = 4;
 
-pub fn move(direction: u8) void {
+var direction: u8 = undefined;
+
+pub fn changeDirection(d: u8) void {
+    direction = d;
+}
+
+pub fn move() void {
     const velocity = 0.3;
     const now = rl.getTime();
 
     if (now - lastMoveTime > velocity) {
         lastMoveTime = now;
         calculatePosBody();
-        calculatePosHead(direction);
+        calculatePosHead();
     }
 }
 
-fn calculatePosHead(direction: u8) void {
+fn calculatePosHead() void {
     const margin = 1;
     switch (direction) {
         right => {
@@ -63,8 +69,7 @@ fn calculatePosBody() void {
         std.debug.print("{d}\n", .{i});
 
         if (i == 2) {
-            
-            body.items[2]= body.items[1];
+            body.items[2] = body.items[1];
             body.items[1] = body.items[0];
             break;
         }
