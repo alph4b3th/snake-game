@@ -34,6 +34,10 @@ pub fn main() anyerror!void {
 
         if (rl.isKeyDown(.down)) snake.changeDirection(snake.down);
 
+        if (snake.isSelfColision()) {
+            std.debug.print("GAME OVeR\n", .{});
+            // break;
+        }
         snake.move();
         rl.beginDrawing();
         defer rl.endDrawing();
@@ -41,6 +45,7 @@ pub fn main() anyerror!void {
         rl.clearBackground(.white);
 
         snake.show();
+
         rl.drawText("@alph4b3th", 190, 200, 20, .light_gray);
     }
 }
