@@ -30,7 +30,7 @@ pub fn changeDirection(d: u8) void {
 }
 
 pub fn move() void {
-    const velocity = 0.3;
+    const velocity = 0.1;
     const now = rl.getTime();
 
     if (now - lastMoveTime > velocity) {
@@ -66,8 +66,6 @@ fn calculatePosBody() void {
     var i = len - 1;
 
     while (i >= 2) : (i -= 1) {
-        std.debug.print("{d}\n", .{i});
-
         if (i == 2) {
             body.items[2] = body.items[1];
             body.items[1] = body.items[0];
@@ -101,6 +99,22 @@ pub fn isSelfColision() bool {
         if (body.items[i].posX == head.posX and body.items[i].posY == head.posY) {
             return true;
         }
+    }
+
+    return false;
+}
+
+pub fn isOutofBounds(screenWidth: u16, screenHeight: u16) bool {
+    const head = body.items[0];
+    // const size = render.size;
+
+    std.debug.print("X:{d}, Y{d}\n", .{ head.posX, head.posY });
+    if (head.posX >= (screenWidth) or head.posX <= 0) {
+        return true;
+    }
+
+    if (head.posY >= (screenHeight) or head.posY <= 0) {
+        return true;
     }
 
     return false;

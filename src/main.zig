@@ -34,7 +34,7 @@ pub fn main() anyerror!void {
 
         if (rl.isKeyDown(.down)) snake.changeDirection(snake.down);
 
-        if (snake.isSelfColision()) {
+        if (snake.isSelfColision() or snake.isOutofBounds(screenWidth, screenHeight)) {
             std.debug.print("GAME OVeR\n", .{});
             // break;
         }
