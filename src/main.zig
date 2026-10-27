@@ -2,6 +2,8 @@ const rl = @import("raylib");
 const std = @import("std");
 
 const snake = @import("snake/snake.zig");
+const rSnake = @import("snake/render.zig");
+const food = @import("food/food.zig");
 
 pub fn main() anyerror!void {
     const screenWidth = 800;
@@ -26,6 +28,14 @@ pub fn main() anyerror!void {
         try snake.addSegment(allocator);
     }
 
+    var apple = try food.create(
+        256,
+        250,
+        rSnake.size,
+        screenHeight,
+        screenWidth,
+    );
+
     while (!rl.windowShouldClose()) {
         if (rl.isKeyDown(.right)) snake.changeDirection(snake.right);
         if (rl.isKeyDown(.left)) snake.changeDirection(snake.left);
@@ -38,6 +48,11 @@ pub fn main() anyerror!void {
             std.debug.print("GAME OVeR\n", .{});
             // break;
         }
+
+        if (apple.isColision(snake.positionHead()[0], snake.positionHead()[1])) {
+            std.debug.print("APPLEEE\n", .{});
+            apple.restart();
+        }
         snake.move();
         rl.beginDrawing();
         defer rl.endDrawing();
@@ -45,6 +60,7 @@ pub fn main() anyerror!void {
         rl.clearBackground(.white);
 
         snake.show();
+        apple.show();
 
         rl.drawText("@alph4b3th", 190, 200, 20, .light_gray);
     }

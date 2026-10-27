@@ -120,6 +120,10 @@ pub fn isOutofBounds(screenWidth: u16, screenHeight: u16) bool {
     return false;
 }
 
+pub fn positionHead() [2]i32 {
+    return [2]i32{ body.items[0].posX, body.items[0].posY };
+}
+
 pub fn show() void {
     render.draw_snake(body);
 }
