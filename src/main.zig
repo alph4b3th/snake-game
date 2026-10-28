@@ -8,7 +8,7 @@ const food = @import("food/food.zig");
 pub fn main() anyerror!void {
     const screenWidth = 800;
     const screenHeight = 450;
-    const fps = 15;
+    const fps = 30;
 
     rl.initWindow(screenWidth, screenHeight, "snake game ai");
     defer rl.closeWindow();
@@ -29,12 +29,13 @@ pub fn main() anyerror!void {
     }
 
     var apple = try food.create(
-        256,
-        250,
+        0,
+        0,
         rSnake.size,
         screenHeight,
         screenWidth,
     );
+    apple.restart();
 
     while (!rl.windowShouldClose()) {
         if (rl.isKeyDown(.right)) snake.changeDirection(snake.right);
@@ -53,6 +54,7 @@ pub fn main() anyerror!void {
             std.debug.print("APPLEEE\n", .{});
             apple.restart();
         }
+        // apple.restart();
         snake.move();
         rl.beginDrawing();
         defer rl.endDrawing();

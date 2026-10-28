@@ -3,19 +3,34 @@ const rl = @import("raylib");
 const render = @import("render.zig");
 
 const updateTime = 0.5;
-var cellSize:u8 = 1;
+var cellSize: u8 = 10;
 
 var height: i32 = undefined;
 var width: i32 = undefined;
 
+// var prng = std.Random.DefaultPrng.init(313);
+// const random = prng.random();
+
 fn randomPos() [2]i32 {
-    var prng = std.Random.DefaultPrng.init(3);
-    const random = prng.random();
+    const maxX = @divTrunc(width - cellSize, cellSize);
+    const maxY = @divTrunc(height - cellSize, cellSize);
 
-    const x = random.intRangeAtMost(i32, 0, width);
-    const y = random.intRangeAtMost(i32, 0, height);
+    const x = rl.getRandomValue(0, maxY - 1);
+    const y = rl.getRandomValue(0, maxX - 1);
+    
+    return .{ x * cellSize, y * cellSize };
+}
 
-    return [2]i32{ x+cellSize, y+cellSize };
+fn isOutofBounds(x: i32, y: i32, screenWidth: i32, screenHeight: i32) bool {
+    if (x >= (screenWidth) or x <= 0) {
+        return true;
+    }
+
+    if (y >= (screenHeight) or y <= 0) {
+        return true;
+    }
+
+    return false;
 }
 
 pub const Food = struct {

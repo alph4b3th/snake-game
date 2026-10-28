@@ -13,7 +13,7 @@ pub fn create(allocator: std.mem.Allocator) !void {
 }
 
 pub fn addSegment(allocator: std.mem.Allocator) !void {
-    try body.append(allocator, cell{ .posX = 190, .posY = 250 });
+    try body.append(allocator, cell{ .posX = 100, .posY = 120 });
 }
 
 var lastMoveTime: f64 = undefined;
@@ -41,7 +41,7 @@ pub fn move() void {
 }
 
 fn calculatePosHead() void {
-    const margin = 1;
+    const margin = 0;
     switch (direction) {
         right => {
             body.items[0].posX += render.size + margin;
@@ -108,7 +108,7 @@ pub fn isOutofBounds(screenWidth: u16, screenHeight: u16) bool {
     const head = body.items[0];
     // const size = render.size;
 
-    std.debug.print("X:{d}, Y{d}\n", .{ head.posX, head.posY });
+   
     if (head.posX >= (screenWidth) or head.posX <= 0) {
         return true;
     }
