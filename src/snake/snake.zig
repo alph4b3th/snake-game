@@ -16,6 +16,7 @@ pub fn addSegment(allocator: std.mem.Allocator) !void {
     try body.append(allocator, cell{ .posX = 100, .posY = 120 });
 }
 
+
 var lastMoveTime: f64 = undefined;
 
 pub const right = 1;
@@ -25,7 +26,7 @@ pub const down = 4;
 
 var direction: u8 = right;
 
-pub fn changeDirection(d: u8) void {
+pub inline fn changeDirection(d: u8) void {
     direction = d;
 }
 
@@ -41,20 +42,19 @@ pub fn move() void {
 }
 
 fn calculatePosHead() void {
-    const margin = 0;
     switch (direction) {
         right => {
-            body.items[0].posX += render.size + margin;
+            body.items[0].posX += render.size;
         },
 
         left => {
-            body.items[0].posX -= render.size + margin;
+            body.items[0].posX -= render.size;
         },
         up => {
-            body.items[0].posY -= render.size + margin;
+            body.items[0].posY -= render.size;
         },
         down => {
-            body.items[0].posY += render.size + margin;
+            body.items[0].posY += render.size;
         },
 
         else => {},
@@ -108,7 +108,6 @@ pub fn isOutofBounds(screenWidth: u16, screenHeight: u16) bool {
     const head = body.items[0];
     // const size = render.size;
 
-   
     if (head.posX >= (screenWidth) or head.posX <= 0) {
         return true;
     }

@@ -5,10 +5,12 @@ const snake = @import("snake/snake.zig");
 const rSnake = @import("snake/render.zig");
 const food = @import("food/food.zig");
 
+const ai = @import("ai/ai.zig");
+
 pub fn main() anyerror!void {
     const screenWidth = 800;
     const screenHeight = 450;
-    const fps = 30;
+    const fps = 15;
 
     rl.initWindow(screenWidth, screenHeight, "snake game ai");
     defer rl.closeWindow();
@@ -22,11 +24,7 @@ pub fn main() anyerror!void {
     defer _ = gpa.deinit();
 
     const allocator = gpa.allocator();
-
     try snake.create(allocator);
-    for (1..10) |_| {
-        try snake.addSegment(allocator);
-    }
 
     var apple = try food.create(
         0,
@@ -35,30 +33,32 @@ pub fn main() anyerror!void {
         screenHeight,
         screenWidth,
     );
+
     apple.restart();
 
     while (!rl.windowShouldClose()) {
         if (rl.isKeyDown(.right)) snake.changeDirection(snake.right);
         if (rl.isKeyDown(.left)) snake.changeDirection(snake.left);
-
         if (rl.isKeyDown(.up)) snake.changeDirection(snake.up);
-
         if (rl.isKeyDown(.down)) snake.changeDirection(snake.down);
 
+        snake.changeDirection(ai.choiceAction());
+
         if (snake.isSelfColision() or snake.isOutofBounds(screenWidth, screenHeight)) {
-            std.debug.print("GAME OVeR\n", .{});
+            // std.debug.print("GAME OVeR\n", .{});
             // break;
+            
         }
 
         if (apple.isColision(snake.positionHead()[0], snake.positionHead()[1])) {
-            std.debug.print("APPLEEE\n", .{});
+            try snake.addSegment(allocator);
             apple.restart();
         }
-        // apple.restart();
+
         snake.move();
+
         rl.beginDrawing();
         defer rl.endDrawing();
-
         rl.clearBackground(.white);
 
         snake.show();

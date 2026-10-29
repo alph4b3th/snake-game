@@ -11,7 +11,7 @@ var width: i32 = undefined;
 // var prng = std.Random.DefaultPrng.init(313);
 // const random = prng.random();
 
-fn randomPos() [2]i32 {
+ fn randomPos() [2]i32 {
     const maxX = @divTrunc(width - cellSize, cellSize);
     const maxY = @divTrunc(height - cellSize, cellSize);
 
